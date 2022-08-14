@@ -1,0 +1,42 @@
+CREATE TABLE productos(
+idProducto NUMBER(8) PRIMARY KEY,
+NombreProducto VARCHAR(50),
+CantidadXUnidad VARCHAR(20),
+PrecioXUnidad NUMBER(6,2));
+
+CREATE TABLE categoria(
+idCategoria NUMBER(2) PRIMARY KEY,
+NombreCategoria VARCHAR(20));
+
+CREATE TABLE cliente(
+idCliente CHAR(6) PRIMARY KEY,
+CargoContacto VARCHAR(25),
+NombreContacto VARCHAR(25),
+NombreCompania VARCHAR(35),
+Direccion VARCHAR(60),
+Ciudad VARCHAR(15),
+Region VARCHAR(10),
+Pais VARCHAR(15));
+
+CREATE TABLE tiempo(
+idTiempo CHAR(6) PRIMARY KEY,
+Dia NUMBER(2),
+Mes NUMBER(2),
+Anio NUMBER(4));
+
+CREATE TABLE ventas(
+idVenta NUMBER(8) PRIMARY KEY,
+idProducto NUMBER(6),
+idCategoria NUMBER(2),
+idCliente CHAR(6),
+idTiempo CHAR(8),
+Cantidad NUMBER(8),
+Cargo NUMBER(10,2));
+
+
+
+
+ALTER TABLE ventas ADD CONSTRAINT fk1 FOREIGN KEY (idProducto) REFERENCES productos (idProducto); 
+ALTER TABLE ventas ADD CONSTRAINT fk2 FOREIGN KEY (idCategoria) REFERENCES categoria (idCategoria); 
+ALTER TABLE ventas ADD CONSTRAINT fk3 FOREIGN KEY (idCliente) REFERENCES cliente (idCliente); 
+ALTER TABLE ventas ADD CONSTRAINT fk4 FOREIGN KEY (idTiempo) REFERENCES tiempo (idTiempo); 

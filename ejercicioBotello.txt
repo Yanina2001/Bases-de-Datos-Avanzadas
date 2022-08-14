@@ -1,0 +1,62 @@
+CREATE OR REPLACE TYPE PAYMENT AS OBJECT (
+amount NUMBER(6) NOT FINAL
+);
+
+CREATE OR REPLACE TYPE CASH UNDER PAYMENT (
+cashTendered NUMBER(10)
+);
+
+CREATE OR REPLACE TYPE CHECK UNDER PAYMENT (
+name VARCHAR2(50),
+bankID VARCHAR(50),
+member procedure authorized() RETURN INTEGER
+);
+
+CREATE OR REPLACE TYPE CREDIT UNDER PAYMENT (
+name VARCHAR2(50),
+type VARCHAR2(50),
+expDATE DATE,
+member procedure authorized() RETURN INTEGER
+);
+
+
+
+CREATE OR REPLACE TYPE customer AS OBJECT (
+name VARCHAR(50),
+address CLOB
+);
+
+
+
+CREATE OR REPLACE TYPE order AS OBJECT (
+fecha DATE,
+status VARCHAR2(20),
+cliente REF customer,
+enviar NT_detalle,
+pagar REF payment,
+member procedure calcSubTotal() RETURN INTEGER,
+member procedure calcTax() RETURN INTEGER,
+member procedure calcTotal() RETURN INTEGER,
+member procedure caclTotalWeight() RETURN INTEGER
+);
+
+CREATE OR REPLACE TYPE NT_detalle AS TABLE of OrderDetail;
+
+
+
+CREATE OR REPLACE TYPE OrderDetail AS OBJECT (
+quantity NUMBER(10),
+taxStatus VARCHAR(50),
+member function calcSubTotal() RETURN INTEGER,
+member function calcWeight() RETURN INTEGER,
+member function calcTax() RETURN INTEGER,
+myItem REF Item
+);
+
+CREATE OR REPLACE TYPE Item AS OBJECT (
+shippingWeight NUMBER(10),
+description VARCHAR(50),
+member function getPriceForQuantity() RETURN INTEGER,
+member function getTax() RETURN INTEGER,
+member function inStock() RETURN BOOL
+);
